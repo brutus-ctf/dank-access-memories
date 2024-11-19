@@ -28,6 +28,19 @@ while True:
       pass
     lolz_key = Fernet.generate_key()
     uber_secure = Fernet(lolz_key).encrypt(dataurl_struct.encode())
-
+    
+    con = sqlite3.connect(dank_database)
+    cur = con.cursor()
+    execute_sql = "INSERT INTO pics_or_it_never_happened VALUES('" + str(event) + "', '" + str(timestamp) + "', '" + str(uber_secure.decode()) + "')"
+    cur.execute(execute_sql)
+    con.commit()
+    time.sleep(1)
+    timestamp = datetime.datetime.now().strftime("%A %d %B %Y, %I:%M:%S.%f %p")
+    event = str(uuid.uuid4())
+    con = sqlite3.connect(dank_database)
+    cur = con.cursor()
+    execute_sql = "INSERT INTO ephemeral_keys VALUES('" + str(event) + "', '" + str(timestamp) + "', '" + str(lolz_key.decode()) + "')"
+    cur.execute(execute_sql)
+    con.commit()
   else:
     pass
